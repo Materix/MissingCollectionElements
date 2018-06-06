@@ -4,15 +4,13 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MissingCollectionElements.API;
+using MissingCollectionElements.Model;
 using Xunit;
 
 namespace MissingCollectionElements.Tests
 {
     public class DataTest
     {
-        private readonly DbContextOptions<DataContext> _options;
-
         public DataTest()
         {
             var serviceProvider = new ServiceCollection()
@@ -28,6 +26,13 @@ namespace MissingCollectionElements.Tests
             {
                 context.Database.EnsureCreated();
             }
+        }
+
+        private readonly DbContextOptions<DataContext> _options;
+
+        private DataContext CreateContext()
+        {
+            return new DataContext(_options);
         }
 
 
@@ -98,12 +103,6 @@ namespace MissingCollectionElements.Tests
 
                 dbContainer.ItemLinks.Should().HaveCount(2);
             }
-
-        }
-
-        private DataContext CreateContext()
-        {
-            return new DataContext(_options);
         }
     }
 }
